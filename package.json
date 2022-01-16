@@ -22,7 +22,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "yarn start",
+    "heroku-postbuild": "react-scripts start",
     "predeploy": "npm run build",
     "deploy": "gh-pages -b master -d build"
   },
