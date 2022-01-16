@@ -1,6 +1,5 @@
 {
   "name": "form-vis-app",
-  "homepage": "https://mauchacon99.github.io/firmus-octogone",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -46,5 +45,8 @@
   },
   "devDependencies": {
     "gh-pages": "^3.2.3"
+  },
+  "resolutions": {
+    "mini-css-extract-plugin": "2.4.5"
   }
 }
