@@ -1,10 +1,9 @@
-import React, { useEffect, useRef } from "react"
-import { Network } from "vis-network"
+import React, { useEffect, useRef } from "react";
+import { Network } from "vis-network";
 
 const VisNetwork = ({ nodes, edges }) => {
-
   const options = {
-    physics: false ,
+    physics: false,
     groups: {
       users: {
         shape: "icon",
@@ -43,21 +42,19 @@ const VisNetwork = ({ nodes, edges }) => {
         },
       },
     },
-  }
+  };
 
-  const visJsRef = useRef(null)
+  const visJsRef = useRef(null);
 
   const approxLinesOfText = Math.ceil(
     nodes.reduce((prev, curr) => prev + (curr.label?.length || 0), 0) / 14
-  )
+  );
 
-  const height = 2 * (approxLinesOfText + edges.length)
+  const height = 2 * (approxLinesOfText + edges.length);
 
   useEffect(() => {
-    const network =
-      visJsRef.current &&
-      new Network(visJsRef.current, { nodes, edges }, options)
-  }, [visJsRef, nodes, edges])
+     visJsRef.current && new Network(visJsRef.current, { nodes, edges }, options);
+  }, [visJsRef, nodes, edges]);
 
   return (
     <div
@@ -68,10 +65,10 @@ const VisNetwork = ({ nodes, edges }) => {
         maxWidth: "100%",
         minWidth: "100%",
         maxHeight: "512px",
-        border: '1px solid lightgray',
+        border: "1px solid lightgray",
       }}
     />
-  )
-}
+  );
+};
 
-export default VisNetwork
+export default VisNetwork;
