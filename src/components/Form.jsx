@@ -1,4 +1,4 @@
-import React   from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
@@ -6,12 +6,19 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
+import { listColor, listEntity } from "./../data";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
-const Form = ({ setFormEntity, formEntity, handleSubmitEntity, listColor, listEntity}) => {
- 
+const Form = ({ setFormEntity, formEntity, handleSubmitEntity, clearLocalstorage }) => {
+  const [open, setOpen] = useState(true);
 
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <>
+     
       <Box
         component="form"
         sx={{
@@ -28,7 +35,6 @@ const Form = ({ setFormEntity, formEntity, handleSubmitEntity, listColor, listEn
           id="standard-error-helper-text"
           helperText="Campo Requerido"
           value={formEntity.id}
-
           onChange={({ target }) =>
             setFormEntity({
               ...formEntity,
@@ -113,6 +119,14 @@ const Form = ({ setFormEntity, formEntity, handleSubmitEntity, listColor, listEn
           size="small"
         >
           Agregar Entidad
+        </Button>
+        <Button
+          onClick={clearLocalstorage}
+          variant="contained"
+          color="error"
+          size="small"
+        >
+          Limpiar Informacion
         </Button>
       </Box>
     </>
