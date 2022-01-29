@@ -9,16 +9,17 @@ import Button from "@mui/material/Button";
 import { listColor, listEntity } from "./../data";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
+ 
 
-const Form = ({ setFormEntity, formEntity, handleSubmitEntity, clearLocalstorage }) => {
-  const [open, setOpen] = useState(true);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+const Form = ({
+  setFormEntity,
+  formEntity,
+  handleSubmitEntity,
+  clearLocalstorage,
+  handleSummary,
+}) => {
   return (
     <>
-     
       <Box
         component="form"
         sx={{
@@ -119,6 +120,14 @@ const Form = ({ setFormEntity, formEntity, handleSubmitEntity, clearLocalstorage
           size="small"
         >
           Agregar Entidad
+        </Button>
+        <Button
+          onClick={handleSummary}
+          variant="contained"
+          color="primary"
+          size="small"
+        >
+          Ver Resumen
         </Button>
         <Button
           onClick={clearLocalstorage}

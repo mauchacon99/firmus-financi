@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
+
 //components
 import VisNetwork from "../components/VisNetwork";
 import BasicTable from "../components/BasicTable";
@@ -7,6 +9,7 @@ import Relationship from "../components/Relationship";
 import RelationTable from "../components/RelationTable";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { listEntity } from "../data";
+import Button from "@mui/material/Button";
 
 function App() {
   // arrays nodes
@@ -14,13 +17,18 @@ function App() {
   const [nodes, setNodes] = useLocalStorage("nodes", []);
   const [edges, setEdges] = useLocalStorage("edges", []);
 
+  const [showSummary, setshowSummary] = useLocalStorage("showSummary", true);
+  const [imgPrint, setImgPrint] = useState("");
+
+  const componentRef = useRef();
+  // Fields for add new entity or nodes
   const [formEntity, setFormEntity] = useState({
     id: "",
     entity: "",
     color: "",
     type: "",
   });
-
+  // Fields for add edges
   const [fieldsEgdes, setFieldsEgdes] = useState({
     to: "",
     from: "",
@@ -93,32 +101,78 @@ function App() {
     setNodes([]);
     setEdges([]);
   };
+
+  const handleSummary = () => {
+    setshowSummary(!showSummary);
+  };
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   return (
     <>
       <img
         className="logo"
         alt="logo-company"
-        src={process.env.PUBLIC_URL + '/img/logo.png'}
+        src={process.env.PUBLIC_URL + "/img/logo.png"}
       />
-      <Form
-        setFormEntity={setFormEntity}
-        formEntity={formEntity}
-        handleSubmitEntity={handleSubmitEntity}
-        clearLocalstorage={clearLocalstorage}
-      />
-      <BasicTable rows={state} />
-      <br />
-      {state.length > 1 && (
-        <Relationship
-          nodes={state}
-          fieldsEgdes={fieldsEgdes}
-          setFieldsEgdes={setFieldsEgdes}
-          AddEgdes={handleAddEgdes}
+      {!showSummary && (
+        <>
+          <div className="logo">
+            <Button
+              variant="outlined"
+              size="small"
+              color="primary"
+              onClick={handleSummary}
+              f
+            >
+              {" "}
+              ATRAS{" "}
+            </Button>
+            <Button
+              variant="outlined"
+              size="small"
+              color="primary"
+              onClick={handlePrint}
+            >
+              IMPRIMIR
+            </Button>
+          </div>
+        </>
+      )}
+
+      {showSummary && (
+        <>
+          <Form
+            setFormEntity={setFormEntity}
+            formEntity={formEntity}
+            handleSubmitEntity={handleSubmitEntity}
+            clearLocalstorage={clearLocalstorage}
+            handleSummary={handleSummary}
+          />
+          <BasicTable rows={state} />
+          <br />
+          {state.length > 1 && (
+            <Relationship
+              nodes={state}
+              fieldsEgdes={fieldsEgdes}
+              setFieldsEgdes={setFieldsEgdes}
+              AddEgdes={handleAddEgdes}
+            />
+          )}
+          <RelationTable rows={edges} nodes={state} />
+          <ReactToPrint content={() => componentRef.current} />
+        </>
+      )}
+
+      {nodes.length > 0 && (
+        <VisNetwork
+          nodes={nodes}
+          edges={edges}
+          ref={componentRef}
+          setImgPrint={setImgPrint}
         />
       )}
-      <RelationTable rows={edges} nodes={state} />
-
-      {nodes.length > 0 && <VisNetwork nodes={nodes} edges={edges} />}
     </>
   );
 }

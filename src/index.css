@@ -2,12 +2,11 @@
   max-width: 300px;
   margin-bottom: 10px;
   position: sticky;
-  top:0;
-  background:white;
+  top: 0;
 }
- 
+
 body {
-  background-image: url('../public/img/copyright.png');
+  background-image: url("../public/img/copyright.png");
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;

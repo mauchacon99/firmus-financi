@@ -8,10 +8,7 @@ import Button from "@mui/material/Button";
 import { ListTypeRelationship } from "./../data";
 
 
-
-
 const Relationship = ({ nodes, fieldsEgdes, setFieldsEgdes, AddEgdes }) => {
-  
   return (
     <>
       <Box
