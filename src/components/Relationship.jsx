@@ -5,10 +5,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
-import { ListTypeRelationship } from "./../data";
+import { listTypeRelationship } from "../data/index.js";
 
-
-const Relationship = ({ nodes, fieldsEgdes, setFieldsEgdes, AddEgdes }) => {
+const Relationship = ({ nodes, fieldsEdges, setFieldsEdges, AddEdges }) => {
   return (
     <>
       <Box
@@ -26,18 +25,18 @@ const Relationship = ({ nodes, fieldsEgdes, setFieldsEgdes, AddEgdes }) => {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             name="from"
-            value={fieldsEgdes.from}
-            label="Origen"
+            value={fieldsEdges.from}
+            label="from"
             onChange={({ target }) => {
-              setFieldsEgdes({
-                ...fieldsEgdes,
+              setFieldsEdges({
+                ...fieldsEdges,
                 from: parseInt(target.value),
               });
             }}
           >
             {nodes.map((item) => {
               return (
-                fieldsEgdes.to !== parseInt(item.id) && (
+                fieldsEdges.to !== parseInt(item.id) && (
                   <MenuItem key={item.id} value={item.id}>
                     {item.id} {item.entity}
                   </MenuItem>
@@ -54,15 +53,15 @@ const Relationship = ({ nodes, fieldsEgdes, setFieldsEgdes, AddEgdes }) => {
             id="demo-simple-select"
             name="relation"
             onChange={({ target }) => {
-              setFieldsEgdes({
-                ...fieldsEgdes,
+              setFieldsEdges({
+                ...fieldsEdges,
                 label: target.value,
               });
             }}
-            value={fieldsEgdes.label}
-            label="Relacion"
+            value={fieldsEdges.label}
+            label="relation"
           >
-            {ListTypeRelationship.map((item, index ) => {
+            {listTypeRelationship.map((item, index) => {
               return (
                 <MenuItem key={index} value={item.label}>
                   {item?.label}
@@ -80,17 +79,17 @@ const Relationship = ({ nodes, fieldsEgdes, setFieldsEgdes, AddEgdes }) => {
             id="demo-simple-select"
             name="to"
             onChange={({ target }) => {
-              setFieldsEgdes({
-                ...fieldsEgdes,
+              setFieldsEdges({
+                ...fieldsEdges,
                 to: parseInt(target.value),
               });
             }}
-            value={fieldsEgdes.to}
-            label="Destino"
+            value={fieldsEdges.to}
+            label="to"
           >
             {nodes.map((item) => {
               return (
-                fieldsEgdes.from !== parseInt(item.id) && (
+                fieldsEdges.from !== parseInt(item.id) && (
                   <MenuItem key={item.id} value={item.id}>
                     {item.id} {item.entity}
                   </MenuItem>
@@ -102,7 +101,7 @@ const Relationship = ({ nodes, fieldsEgdes, setFieldsEgdes, AddEgdes }) => {
 
         <Button
           variant="contained"
-          onClick={AddEgdes}
+          onClick={AddEdges}
           color="primary"
           size="small"
         >

@@ -36,7 +36,7 @@ const listEntity = [
   },
 ];
 
-const ListTypeRelationship = [
+const listTypeRelationship = [
   {
     label: "es accionista de",
     id: 1,
@@ -63,4 +63,4 @@ const ListTypeRelationship = [
   },
 ];
 
-export { ListTypeRelationship, listColor, listEntity };
+export { listTypeRelationship, listColor, listEntity };

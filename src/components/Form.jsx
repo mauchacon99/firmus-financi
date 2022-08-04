@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
@@ -7,15 +7,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import { listColor, listEntity } from "./../data";
-import Alert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
- 
 
 const Form = ({
   setFormEntity,
   formEntity,
   handleSubmitEntity,
-  clearLocalstorage,
+  clearLocalStorage,
   handleSummary,
 }) => {
   return (
@@ -130,7 +127,7 @@ const Form = ({
           Ver Resumen
         </Button>
         <Button
-          onClick={clearLocalstorage}
+          onClick={clearLocalStorage}
           variant="contained"
           color="error"
           size="small"
