@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Network } from "vis-network";
 import { assets } from "../config/img/assets-storage";
+
 const VisNetwork = React.forwardRef(
   ({ nodes, edges, setImgPrint }, visJsRef) => {
     const approxLinesOfText = Math.ceil(
@@ -51,16 +52,15 @@ const VisNetwork = React.forwardRef(
           },
         },
       };
-      const visNetwork = new Network(
-        visJsRef.current,
-        { nodes, edges },
-        options
-      );
+
       visJsRef.current &&
-        visNetwork.on("afterDrawing", function (ctx) {
-          var dataForPrint = ctx.canvas.toDataURL();
-          setImgPrint(dataForPrint);
-        });
+        new Network(visJsRef.current, { nodes, edges }, options).on(
+          "afterDrawing",
+          function (ctx) {
+            var contentForPrint = ctx.canvas.toDataURL();
+            setImgPrint(contentForPrint);
+          }
+        );
     }, [visJsRef, nodes, edges, setImgPrint]);
 
     return (
