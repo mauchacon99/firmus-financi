@@ -153,7 +153,7 @@ function App() {
               nodes={state}
               fieldsEdges={fieldsEdges}
               setFieldsEdges={setFieldsEdges}
-              AddEgdes={handleAddEdges}
+              AddEdges={handleAddEdges}
             />
           )}
           <RelationTable rows={edges} nodes={state} />
