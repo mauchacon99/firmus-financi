@@ -121,7 +121,7 @@ const Form = ({
         <Button
           onClick={handleSummary}
           variant="contained"
-          color="primary"
+          color="success"
           size="small"
         >
           Ver Resumen

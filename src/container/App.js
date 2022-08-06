@@ -110,7 +110,7 @@ function App() {
 
   return (
     <>
-      <div className="flex items-center	p-3 sticky justify-between bg-white">
+      <div className="flex items-center	p-3 sticky justify-between  bg-blue-50 mb-2">
         <Header />
         {!showSummary && (
           <>
