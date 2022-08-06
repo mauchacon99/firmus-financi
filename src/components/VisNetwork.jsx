@@ -67,18 +67,28 @@ const VisNetwork = React.forwardRef(
     }, [visJsRef, nodes, edges, setImgPrint]);
 
     return (
-      <div
-        ref={visJsRef}
-        style={{
-          height: `${height < 150 ? 150 : height}em`,
-          width: `${8 * nodes.length + 8}em`,
-          maxWidth: "100%",
-          minWidth: "100%",
-          maxHeight: "770px",
-          position: "absolute",
-          backgroundImage: `url(${assets.public.watermarkCopyright})`,
-        }}
-      />
+      <>
+        <style type="text/css" media="print">
+          {
+            "\
+            @page { size: letter;  }\
+            "
+          }
+        </style>
+
+        <div
+          ref={visJsRef}
+          style={{
+            height: `${height < 150 ? 150 : height}em`,
+            width: `${8 * nodes.length + 8}em`,
+            maxWidth: "100%",
+            minWidth: "100%",
+            maxHeight: "1050px",
+            position: "absolute",
+            backgroundImage: `url(${assets.public.watermarkCopyright})`,
+          }}
+        />
+      </>
     );
   }
 );
