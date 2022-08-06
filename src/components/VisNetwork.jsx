@@ -52,15 +52,18 @@ const VisNetwork = React.forwardRef(
           },
         },
       };
-
+      const networkCanvas = new Network(
+        visJsRef.current,
+        { nodes, edges },
+        options
+      );
       visJsRef.current &&
-        new Network(visJsRef.current, { nodes, edges }, options).on(
-          "afterDrawing",
-          function (ctx) {
-            var contentForPrint = ctx.canvas.toDataURL();
-            setImgPrint(contentForPrint);
-          }
-        );
+        networkCanvas.on("afterDrawing", function (ctx) {
+          var contentForPrint = ctx.canvas.toDataURL();
+          setImgPrint(contentForPrint);
+        });
+      var scaleOption = { scale: 2.2 };
+      networkCanvas.moveTo(scaleOption);
     }, [visJsRef, nodes, edges, setImgPrint]);
 
     return (
@@ -72,6 +75,7 @@ const VisNetwork = React.forwardRef(
           maxWidth: "100%",
           minWidth: "100%",
           maxHeight: "770px",
+          position: "absolute",
           backgroundImage: `url(${assets.public.watermarkCopyright})`,
         }}
       />
