@@ -12,7 +12,14 @@ const VisNetwork = React.forwardRef(
 
     useEffect(() => {
       const options = {
-        physics: false,
+        shape: "triangleDown",
+        physics: {
+          barnesHut: {
+            springLength: 260,
+          },
+        },
+        nodes: {},
+        edges: {},
         groups: {
           users: {
             shape: "icon",
@@ -68,13 +75,11 @@ const VisNetwork = React.forwardRef(
 
     return (
       <>
-        <style type="text/css" media="print">
-          {
-            "\
+        {/* <style type="text/css" media="print">
+          {"\
             @page { size: letter;  }\
-            "
-          }
-        </style>
+            "}
+        </style> */}
 
         <div
           ref={visJsRef}
