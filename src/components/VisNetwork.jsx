@@ -14,11 +14,11 @@ const VisNetwork = React.forwardRef(
       const options = {
         nodes: {
           size: 15,
-          font: { color: "#000000" },
+          font: { color: "#000000", alignment: "right" },
         },
         edges: {
           color: "blue",
-          font: "8px",
+          font: "10px",
           scaling: {
             label: false,
           },
@@ -61,7 +61,7 @@ const VisNetwork = React.forwardRef(
           var contentForPrint = ctx.canvas.toDataURL();
           setImgPrint(contentForPrint);
         });
-      var scaleOption = { scale: 2.2 };
+      var scaleOption = { scale: 4 };
       networkCanvas.moveTo(scaleOption);
     }, [visJsRef, nodes, edges, setImgPrint]);
 
