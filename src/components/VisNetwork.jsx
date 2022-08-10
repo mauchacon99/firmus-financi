@@ -12,14 +12,20 @@ const VisNetwork = React.forwardRef(
 
     useEffect(() => {
       const options = {
-        shape: "triangleDown",
-        physics: {
-          barnesHut: {
-            springLength: 260,
-          },
+        nodes: {
+          size: 15,
+          font: { color: "#000000" },
         },
-        nodes: {},
-        edges: {},
+        edges: {
+          color: "blue",
+          font: "8px",
+          scaling: {
+            label: false,
+          },
+          smooth: false,
+        },
+        physics: false,
+
         groups: {
           users: {
             shape: "icon",
@@ -40,22 +46,8 @@ const VisNetwork = React.forwardRef(
             },
           },
           custody: {
-            shape: "icon",
-            icon: {
-              face: "'FontAwesome'",
-              code: "\uf0d6",
-              size: 100,
-              color: "#008000",
-            },
-          },
-          contract: {
-            shape: "icon",
-            icon: {
-              face: "'FontAwesome'",
-              code: "\uf1c1",
-              size: 100,
-              color: "#EE102E",
-            },
+            shape: "image",
+            image: { selected: assets.public.svg.iconTest },
           },
         },
       };
@@ -75,11 +67,11 @@ const VisNetwork = React.forwardRef(
 
     return (
       <>
-        {/* <style type="text/css" media="print">
+        <style type="text/css" media="print">
           {"\
             @page { size: letter;  }\
             "}
-        </style> */}
+        </style>
 
         <div
           ref={visJsRef}
