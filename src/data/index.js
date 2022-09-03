@@ -1,3 +1,5 @@
+import { assets } from "../config/img/assets-storage";
+
 const listColor = [
   {
     color: "Rojo",
@@ -16,23 +18,27 @@ const listColor = [
 const listEntity = [
   {
     label: "Persona Natural",
-    icon: "\uf007",
+    src: "\uf007",
     id: 1,
+    shape: "icon",
   },
   {
     label: "Persona Juridica",
-    icon: "\uf1ad",
+    src: "\uf1ad",
     id: 2,
+    shape: "icon",
   },
   {
     label: "Cuenta Custodia",
-    icon: "\uf0d6",
+    src: assets.public.svg.iconTest,
     id: 3,
+    shape: "image",
   },
   {
     label: "Contrato",
-    icon: "\uf1c1",
+    src: "\uf1c1",
     id: 4,
+    shape: "icon",
   },
 ];
 
