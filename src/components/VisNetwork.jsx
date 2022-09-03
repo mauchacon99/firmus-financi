@@ -12,13 +12,14 @@ const VisNetwork = React.forwardRef(
 
     useEffect(() => {
       const options = {
-        shape: "triangleDown",
         physics: {
           barnesHut: {
             springLength: 260,
           },
         },
-        nodes: {},
+        nodes: {
+          shape: "triangleDown",
+        },
         edges: {},
         groups: {
           users: {
