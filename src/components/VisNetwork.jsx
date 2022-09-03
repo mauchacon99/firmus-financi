@@ -12,20 +12,14 @@ const VisNetwork = React.forwardRef(
 
     useEffect(() => {
       const options = {
-        nodes: {
-          size: 15,
-          font: { color: "#000000", alignment: "right" },
-        },
-        edges: {
-          color: "blue",
-          font: "10px",
-          scaling: {
-            label: false,
+        shape: "triangleDown",
+        physics: {
+          barnesHut: {
+            springLength: 260,
           },
-          smooth: false,
         },
-        physics: false,
-
+        nodes: {},
+        edges: {},
         groups: {
           users: {
             shape: "icon",
