@@ -11,6 +11,7 @@ import Form from "../components/Form";
 import Relationship from "../components/Relationship";
 import RelationTable from "../components/RelationTable";
 import Header from "../components/Header";
+import { assets } from "../config/img/assets-storage";
 
 function App() {
   // arrays nodes
@@ -34,8 +35,9 @@ function App() {
     to: "",
     from: "",
     label: "es accionista de",
-    font: { align: "middle" },
+    font: { align: "horizontal", size: 12 },
     arrows: "to",
+    length: 100,
   });
   const validation = () => {
     if (state.find((e) => e.id === formEntity.id)) return false;
@@ -75,23 +77,37 @@ function App() {
         to: "",
         from: "",
         label: "",
-        font: { align: "middle" },
+        font: { align: "horizontal" },
         arrows: "to",
+        length: 100,
       });
     }
   };
+  const prepareFigureNode = (node, { src, shape }) => {
+    return shape === "image"
+      ? {
+          image: {
+            unselected: assets.public.svg.iconTest,
+            selected: src,
+          },
+        }
+      : {
+          icon: {
+            face: "'FontAwesome'",
+            code: src,
+            size: 50,
+            color: node.color,
+          },
+        };
+  };
   const prepareNodes = (node) => {
+    const entity = listEntity.find((e) => e.id === node.type);
     setNodes([
       {
         id: parseInt(node.id),
         label: node.entity,
-        shape: "icon",
-        icon: {
-          face: "'FontAwesome'",
-          code: listEntity.find((e) => e.id === node.type)?.icon,
-          size: 50,
-          color: node.color,
-        },
+        shape: entity.shape,
+        ...prepareFigureNode(node, entity),
       },
       ...nodes,
     ]);

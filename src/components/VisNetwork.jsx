@@ -12,7 +12,20 @@ const VisNetwork = React.forwardRef(
 
     useEffect(() => {
       const options = {
+        nodes: {
+          size: 15,
+          font: { color: "#000000", alignment: "right" },
+        },
+        edges: {
+          color: "blue",
+          font: "10px",
+          scaling: {
+            label: false,
+          },
+          smooth: false,
+        },
         physics: false,
+
         groups: {
           users: {
             shape: "icon",
@@ -33,22 +46,8 @@ const VisNetwork = React.forwardRef(
             },
           },
           custody: {
-            shape: "icon",
-            icon: {
-              face: "'FontAwesome'",
-              code: "\uf0d6",
-              size: 100,
-              color: "#008000",
-            },
-          },
-          contract: {
-            shape: "icon",
-            icon: {
-              face: "'FontAwesome'",
-              code: "\uf1c1",
-              size: 100,
-              color: "#EE102E",
-            },
+            shape: "image",
+            image: { selected: assets.public.svg.iconTest },
           },
         },
       };
@@ -62,23 +61,31 @@ const VisNetwork = React.forwardRef(
           var contentForPrint = ctx.canvas.toDataURL();
           setImgPrint(contentForPrint);
         });
-      var scaleOption = { scale: 2.2 };
+      var scaleOption = { scale: 4 };
       networkCanvas.moveTo(scaleOption);
     }, [visJsRef, nodes, edges, setImgPrint]);
 
     return (
-      <div
-        ref={visJsRef}
-        style={{
-          height: `${height < 150 ? 150 : height}em`,
-          width: `${8 * nodes.length + 8}em`,
-          maxWidth: "100%",
-          minWidth: "100%",
-          maxHeight: "770px",
-          position: "absolute",
-          backgroundImage: `url(${assets.public.watermarkCopyright})`,
-        }}
-      />
+      <>
+        <style type="text/css" media="print">
+          {"\
+            @page { size: letter;  }\
+            "}
+        </style>
+
+        <div
+          ref={visJsRef}
+          style={{
+            height: `${height < 150 ? 150 : height}em`,
+            width: `${8 * nodes.length + 8}em`,
+            maxWidth: "100%",
+            minWidth: "100%",
+            maxHeight: "1050px",
+            position: "absolute",
+            backgroundImage: `url(${assets.public.watermarkCopyright})`,
+          }}
+        />
+      </>
     );
   }
 );
