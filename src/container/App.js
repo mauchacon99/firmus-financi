@@ -3,22 +3,27 @@ import ReactToPrint, { useReactToPrint } from "react-to-print";
 
 //components
 import Button from "@mui/material/Button";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import { listEntity } from "../data";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 import VisNetwork from "../components/VisNetwork";
 import BasicTable from "../components/BasicTable";
 import Form from "../components/Form";
-import Relationship from "../components/Relationship";
 import RelationTable from "../components/RelationTable";
 import Header from "../components/Header";
+// hooks
+import { useLocalStorage } from "../hooks/useLocalStorage";
+// utils
 import { assets } from "../config/img/assets-storage";
+// services
+import custodyAccount from "../services/custodyAccount";
 
 function App() {
   // arrays nodes
-  const [state, setState] = useLocalStorage("state", []);
+  const [state, setState] = useLocalStorage("state", {});
   const [nodes, setNodes] = useLocalStorage("nodes", []);
   const [edges, setEdges] = useLocalStorage("edges", []);
-
+  const [dataRecords, setDataRecords] = useLocalStorage("data", null);
+  const [loading, setLoading] = useState(false);
   const [showSummary, setShowSummary] = useLocalStorage("showSummary", true);
   const [, setImgPrint] = useState("");
 
@@ -30,92 +35,79 @@ function App() {
     color: "",
     type: "",
   });
-  // Fields for add edges
-  const [fieldsEdges, setFieldsEdges] = useState({
-    to: "",
-    from: "",
-    label: "es accionista de",
-    font: { align: "horizontal", size: 12 },
-    arrows: "to",
-    length: 100,
-  });
-  const validation = () => {
-    if (state.find((e) => e.id === formEntity.id)) return false;
-    else return true;
-  };
-  const handleSubmitEntity = () => {
-    if (validation() && formEntity.id && formEntity.entity) {
-      //add nodes array
-      setState([...state, formEntity]);
-      // created node
-      prepareNodes(formEntity);
-      //clear inputs
-      setFormEntity({
-        id: "",
-        entity: "",
-        color: "",
-        type: "",
-      });
-    } else alert(`Ah Ocurrido un error `);
-  };
-  const validateEdges = () => {
-    const { to, from, label } = fieldsEdges;
-    const value = edges.find(
-      (e) => e.to === to && e.from === from && e.label === label
-    );
+  const handleSubmitEntity = async () => {
+    if (!dataRecords || dataRecords.Id !== formEntity.id) {
+      try {
+        setLoading(true);
+        const { data } = await custodyAccount.find(formEntity.id);
+        setDataRecords(data);
+        const accountCustody = {
+          label: `${data.custodian.name} - ${data.Name}`,
+          id: data.Id,
+          shape: "image",
+          image: {
+            selected: data.custodian.custodianDetail?.url_logo,
+            unselected: assets.public.svg.iconTest,
+          },
+        };
+        const listDeclarationsControl = [];
+        const listEdges = [];
 
-    return value ? true : false;
+        data.custodyAccountDetail.declarationControl.forEach((item) => {
+          var newNode = item.naturalPerson
+            ? prepareNodeTypeNaturalPerson(item.naturalPerson)
+            : prepareNodeTypeLegalPerson(item.legalPerson);
+          var newEdges = prepareEdges(item);
+
+          listDeclarationsControl.push(newNode);
+
+          newNode = null;
+          if (newEdges) listEdges.push(newEdges);
+        });
+        setEdges(listEdges);
+        setNodes([...listDeclarationsControl, accountCustody]);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
+    }
   };
-  const handleAddEdges = () => {
-    //add edges array
-    const { to, from, label } = fieldsEdges;
-    validateEdges();
-    if (to && from && label) {
-      setEdges([...edges, fieldsEdges]);
-      // clear input
-      setFieldsEdges({
-        to: "",
-        from: "",
-        label: "",
+  const prepareNodeTypeNaturalPerson = ({
+    id_natural_person: id,
+    first_name,
+    last_name,
+  }) => {
+    return {
+      label: `${first_name} ${last_name}`,
+      id,
+      shape: "icon",
+      group: "users",
+    };
+  };
+  const prepareNodeTypeLegalPerson = ({ name: label, ID: id }) => {
+    return {
+      label,
+      id,
+      shape: "icon",
+      group: "company",
+    };
+  };
+  const prepareEdges = ({ IDCA, details, IDNP, IDLP }) => {
+    if (details)
+      return {
+        to: IDCA,
+        from: IDNP || IDLP,
+        label: details.lookup.valueString,
         font: { align: "horizontal" },
         arrows: "to",
         length: 100,
-      });
-    }
-  };
-  const prepareFigureNode = (node, { src, shape }) => {
-    return shape === "image"
-      ? {
-          image: {
-            unselected: assets.public.svg.iconTest,
-            selected: src,
-          },
-        }
-      : {
-          icon: {
-            face: "'FontAwesome'",
-            code: src,
-            size: 50,
-            color: node.color,
-          },
-        };
-  };
-  const prepareNodes = (node) => {
-    const entity = listEntity.find((e) => e.id === node.type);
-    setNodes([
-      {
-        id: parseInt(node.id),
-        label: node.entity,
-        shape: entity.shape,
-        ...prepareFigureNode(node, entity),
-      },
-      ...nodes,
-    ]);
+      };
   };
   const clearLocalStorage = () => {
     setState([]);
     setNodes([]);
     setEdges([]);
+    setDataRecords(null);
   };
   const handleSummary = () => {
     setShowSummary(!showSummary);
@@ -152,27 +144,31 @@ function App() {
           </>
         )}
       </div>
-
       {showSummary && (
         <>
           <Form
             setFormEntity={setFormEntity}
             formEntity={formEntity}
+            loading={loading}
             handleSubmitEntity={handleSubmitEntity}
             clearLocalStorage={clearLocalStorage}
             handleSummary={handleSummary}
           />
+          {dataRecords && (
+            <Alert
+              severity={
+                dataRecords.custodyAccountDetail.Active ? "success" : "error"
+              }
+            >
+              <AlertTitle> Estado de la Cuenta - {dataRecords.Id} </AlertTitle>
+              Estatus:{" "}
+              {dataRecords.custodyAccountDetail.Active ? "Active" : "Inactiva"}
+            </Alert>
+          )}
+
           <BasicTable rows={state} />
           <br />
-          {state.length > 1 && (
-            <Relationship
-              nodes={state}
-              fieldsEdges={fieldsEdges}
-              setFieldsEdges={setFieldsEdges}
-              AddEdges={handleAddEdges}
-            />
-          )}
-          <RelationTable rows={edges} nodes={state} />
+          <RelationTable rows={edges} nodes={nodes} />
           <ReactToPrint content={() => componentRef.current} />
         </>
       )}

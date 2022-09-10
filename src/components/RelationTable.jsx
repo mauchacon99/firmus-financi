@@ -7,11 +7,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-
 export default function BasicTable({ rows, nodes }) {
   return (
     <>
-      {rows.length  > 0 && (
+      {rows.length > 0 && (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -37,15 +36,15 @@ export default function BasicTable({ rows, nodes }) {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.from} {" "}
-                    { nodes.find((e) => parseInt(e.id) === row.from)?.entity }
+                    {row.from}{" "}
+                    {nodes.find((e) => parseInt(e.id) === row.from)?.label}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {row.label}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {row.to } {""}
-                    { nodes.find((e) => parseInt(e.id) === row.to)?.entity }
+                    {row.to} {""}
+                    {nodes.find((e) => e.id === row.to)?.label}
                   </TableCell>
                 </TableRow>
               ))}
