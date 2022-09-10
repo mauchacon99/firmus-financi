@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: process.env.baseURL || "http://localhost:4200/",
+  baseURL: "https://nodejsclusters-87754-0.cloudclusters.net/",
 });
