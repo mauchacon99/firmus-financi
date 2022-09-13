@@ -23,7 +23,7 @@ function App() {
     nodes: {},
     edges: {},
     data: {},
-    showSummary: true,
+    showSummary: false,
   });
   const [loading, setLoading] = useState(false);
 
