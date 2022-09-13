@@ -2,14 +2,13 @@ import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-// import SendIcon from "@mui/icons-material/Send";
+
 const Form = ({
   setFormEntity,
   formEntity,
   handleSubmitEntity,
   clearLocalStorage,
   handleSummary,
-  loading,
 }) => {
   return (
     <>
@@ -37,14 +36,17 @@ const Form = ({
           }
           name="id"
         />
+
         <Button
           onClick={handleSubmitEntity}
+          disabled={!formEntity.id}
           variant="contained"
           color="primary"
           size="small"
         >
           BUSCAR
         </Button>
+
         <Button
           onClick={handleSummary}
           variant="contained"
