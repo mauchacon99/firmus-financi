@@ -12,14 +12,50 @@ const VisNetwork = React.forwardRef(
 
     useEffect(() => {
       const options = {
-        shape: "triangleDown",
+        interaction: {
+          dragNodes: true,
+          dragView: true,
+          hideEdgesOnDrag: false,
+          hideEdgesOnZoom: false,
+          hideNodesOnDrag: false,
+          hover: false,
+          hoverConnectedEdges: true,
+          keyboard: {
+            enabled: false,
+            speed: { x: 10, y: 10, zoom: 0.02 },
+            bindToWindow: true,
+            autoFocus: true,
+          },
+          multiselect: false,
+          navigationButtons: false,
+          selectable: true,
+          selectConnectedEdges: true,
+          tooltipDelay: 300,
+          zoomSpeed: 1,
+          zoomView: true,
+        },
         physics: {
-          barnesHut: {
-            springLength: 260,
+          // Even though it's disabled the options still apply to network.stabilize().
+          enabled: true,
+          solver: "repulsion",
+          repulsion: {
+            nodeDistance: 400, // Put more distance between the nodes.
+          },
+          timestep: 0.5,
+          adaptiveTimestep: true,
+        },
+        nodes: {
+          shape: "triangleDown",
+          font: {
+            size: 18,
           },
         },
-        nodes: {},
-        edges: {},
+        edges: {
+          length: 500, // Longer edges between nodes.
+          font: {
+            size: 18,
+          },
+        },
         groups: {
           users: {
             shape: "icon",
@@ -55,8 +91,11 @@ const VisNetwork = React.forwardRef(
           var contentForPrint = ctx.canvas.toDataURL();
           setImgPrint(contentForPrint);
         });
-      var scaleOption = { scale: 4 };
-      networkCanvas.moveTo(scaleOption);
+
+      networkCanvas.once("stabilized", function () {
+        var scaleOption = { scale: 1.5, throttleRedraw: 10 };
+        networkCanvas.moveTo(scaleOption);
+      });
     }, [visJsRef, nodes, edges, setImgPrint]);
 
     return (
