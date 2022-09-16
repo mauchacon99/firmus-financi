@@ -1,10 +1,6 @@
 import { assets } from "../config/img/assets-storage";
 
-const prepareNodeTypeNaturalPerson = ({
-  id_natural_person: id,
-  first_name,
-  last_name,
-}) => {
+const prepareNodeTypeNaturalPerson = (id, { first_name, last_name }) => {
   return {
     label: `${first_name} ${last_name}`,
     id,
@@ -13,7 +9,7 @@ const prepareNodeTypeNaturalPerson = ({
   };
 };
 
-const prepareNodeTypeLegalPerson = ({ name: label, ID: id }) => {
+const prepareNodeTypeLegalPerson = (id, { name: label }) => {
   return {
     label,
     id,
@@ -22,16 +18,18 @@ const prepareNodeTypeLegalPerson = ({ name: label, ID: id }) => {
   };
 };
 
-const prepareEdges = ({ IDCA, details, IDNP, IDLP }) => {
-  if (details)
+const prepareEdges = ({ details }, { id: custodyAccountId }) => {
+  if (details) {
+    const { IDPARENT: parentId, IDCONTROL: controlId, lookup } = details;
     return {
-      to: IDCA,
-      from: IDNP || IDLP,
-      label: details.lookup.valueString,
+      to: parentId || custodyAccountId,
+      from: controlId,
+      label: lookup.valueString,
       font: { align: "horizontal" },
       arrows: "to",
       length: 100,
     };
+  }
 };
 
 export const handleCustodyAccount = async ({
@@ -54,9 +52,9 @@ export const handleCustodyAccount = async ({
 
   custodyAccountDetail.declarationControl.forEach((item) => {
     var newNode = item.naturalPerson
-      ? prepareNodeTypeNaturalPerson(item.naturalPerson)
-      : prepareNodeTypeLegalPerson(item.legalPerson);
-    var newEdges = prepareEdges(item);
+      ? prepareNodeTypeNaturalPerson(item.ID, item.naturalPerson)
+      : prepareNodeTypeLegalPerson(item.ID, item.legalPerson);
+    var newEdges = prepareEdges(item, accountCustody);
 
     listDeclarationsControl.push(newNode);
 
