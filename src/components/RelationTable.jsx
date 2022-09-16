@@ -10,9 +10,7 @@ import { IconBuilding, IconUser } from "./icons";
 
 export default function BasicTable({ rows, nodes, data }) {
   const typePersona = (Id) => {
-    const person = data.find(
-      (item) => parseInt(item.IDNP) === Id || parseInt(item.IDLP) === Id
-    );
+    const person = data.find((item) => parseInt(item.ID) === Id);
     return person.EntityType;
   };
 
