@@ -1,4 +1,4 @@
-export const assets = {
+ const assets = {
   public: {
     logo: "./img/logo.png",
     watermarkCopyright: "./img/watermark-copyright.png",
@@ -7,3 +7,4 @@ export const assets = {
     },
   },
 };
+export default assets

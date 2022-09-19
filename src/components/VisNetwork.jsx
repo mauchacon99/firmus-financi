@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Network } from "vis-network";
-import { assets } from "../config/img/assets-storage";
+import  assets  from "../config/img/assets-storage.ts";
 
 const VisNetwork = React.forwardRef(
   ({ nodes, edges, setImgPrint }, visJsRef) => {
