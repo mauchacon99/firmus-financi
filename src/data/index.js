@@ -1,4 +1,4 @@
-import { assets } from "../config/img/assets-storage";
+import assets from "../config/img/assets-storage.ts";
 
 const listColor = [
   {

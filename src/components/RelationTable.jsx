@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { IconBuilding, IconUser } from "./icons";
+import { IconBuilding, IconUser } from "./icons/index.ts";
 
 export default function BasicTable({ rows, nodes, data }) {
   const typePersona = (Id) => {

@@ -9,15 +9,14 @@ import VisNetwork from "../components/VisNetwork";
 import Form from "../components/Form";
 import RelationTable from "../components/RelationTable";
 import Header from "../components/Header";
-import SpinnerLoader from "../components/SpinnerLoader";
 // hooks
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import handleCustodyAccount from "../hooks/handleCustodyAccount";
 
 // services
-import custodyAccount from "../services/custodyAccount";
+import custodyAccountService from "../services/custodyAccount.service.ts";
 
-function App() {
+function App({ setLoading, stateApp, setStateApp }) {
   // arrays nodes
   const [state, setState] = useLocalStorage("state", {
     nodes: {},
@@ -25,7 +24,6 @@ function App() {
     data: {},
     showSummary: false,
   });
-  const [loading, setLoading] = useState(false);
 
   const [, setImgPrint] = useState("");
 
@@ -35,11 +33,14 @@ function App() {
   const componentRef = useRef();
 
   const handleSubmitEntity = async () => {
-    if (!state.data.length || state.data.Id !== formEntity.id) {
+    if (!state.data.length || state.data.AccountFirmus !== formEntity.id) {
       try {
         setLoading(true);
         clearLocalStorage();
-        const { data } = await custodyAccount.find(formEntity.id);
+        const { data } = await custodyAccountService.find(
+          formEntity.id,
+          stateApp.token
+        );
         const { nodes, edges } = await handleCustodyAccount(data);
         setState({
           ...state,
@@ -51,6 +52,7 @@ function App() {
       } catch (error) {
         clearLocalStorage();
         setLoading(false);
+        if (error.response.data.statusCode === 401) handleLogout();
       }
     }
   };
@@ -60,7 +62,7 @@ function App() {
       id: "",
     });
     setState({
-      ...state,
+      showSummary: false,
       nodes: {},
       edges: {},
       data: {},
@@ -75,14 +77,34 @@ function App() {
     content: () => componentRef.current,
   });
 
+  const handleLogout = () => {
+    setStateApp({
+      user: {},
+      message: null,
+      token: null,
+      isLogged: false,
+    });
+    clearLocalStorage();
+    localStorage.clear();
+  };
+
   return (
     <>
-      <SpinnerLoader loading={loading} />
       <div className="flex items-center	p-3 sticky justify-between  bg-blue-50 mb-2">
         <Header />
-        {state.showSummary && (
-          <>
-            <div className="group-buttons-previous-and-print">
+
+        <div className="group-buttons-previous-and-print">
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={() => handleLogout()}
+          >
+            {" "}
+            Cerrar Sesion{" "}
+          </Button>
+          {state.showSummary && (
+            <>
               <Button
                 variant="outlined"
                 size="small"
@@ -100,19 +122,22 @@ function App() {
               >
                 IMPRIMIR
               </Button>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
       {!state.showSummary && (
         <>
           <Form
             setFormEntity={setFormEntity}
             formEntity={formEntity}
-            loading={loading}
+            setLoading={setLoading}
             handleSubmitEntity={handleSubmitEntity}
             clearLocalStorage={clearLocalStorage}
             handleSummary={handleSummary}
+            handleLogout={handleLogout}
+            setStateApp={setStateApp}
+            stateApp={stateApp}
           />
           {state.data?.custodyAccountDetail && (
             <Alert
@@ -120,7 +145,10 @@ function App() {
                 state.data.custodyAccountDetail.Active ? "success" : "error"
               }
             >
-              <AlertTitle> Estado de la Cuenta - {state.data.Id} </AlertTitle>
+              <AlertTitle>
+                {" "}
+                Estado de la Cuenta Nro - {state.data.AccountFirmus}{" "}
+              </AlertTitle>
               Estatus:{" "}
               {state.data.custodyAccountDetail.Active ? "Active" : "Inactiva"}
             </Alert>
