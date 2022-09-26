@@ -20,10 +20,16 @@ const Form = ({
 
   const getAllCustodys = async () => {
     try {
-      setLoading(true);
-      const { data } = await custodyAccountService.all(stateApp.token);
-      setCustody(data);
-      setLoading(false);
+      let isActive = true;
+      if (isActive) {
+        setLoading(true);
+        const { data } = await custodyAccountService.all(stateApp.token);
+        setCustody(data);
+        setLoading(false);
+      }
+      return () => {
+        isActive = false;
+      };
     } catch (error) {
       setLoading(false);
       if (error.response?.data?.statusCode === 401) handleLogout();

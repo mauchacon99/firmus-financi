@@ -38,13 +38,14 @@ export const handleCustodyAccount = async ({
   Id: id,
   custodyAccountDetail,
 }) => {
+  console.log(custodian.custodianDetail);
   const accountCustody = {
     label: `${custodian.name} - ${Name}`,
     id,
     shape: "image",
     image: {
-      selected: custodian.custodianDetail?.url_logo,
-      unselected: assets.public.svg.iconTest,
+      selected: custodian.custodianDetail?.logo_SVG,
+      unselected: assets.public.png.iconBankDefault,
     },
   };
   const listDeclarationsControl = [];
