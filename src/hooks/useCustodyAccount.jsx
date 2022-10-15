@@ -32,7 +32,7 @@ const prepareEdges = ({ details }, { id: custodyAccountId }) => {
   }
 };
 
-export const handleCustodyAccount = async ({
+export const useCustodyAccount = async ({
   custodian,
   Name,
   Id: id,
@@ -68,4 +68,4 @@ export const handleCustodyAccount = async ({
   };
 };
 
-export default handleCustodyAccount;
+export default useCustodyAccount;

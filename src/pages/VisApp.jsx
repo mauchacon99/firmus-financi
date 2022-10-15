@@ -11,7 +11,7 @@ import RelationTable from "../components/RelationTable";
 import Header from "../components/Header";
 // hooks
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import handleCustodyAccount from "../hooks/handleCustodyAccount";
+import useCustodyAccount from "../hooks/useCustodyAccount";
 
 // services
 import custodyAccountService from "../services/custodyAccount.service.ts";
@@ -41,7 +41,8 @@ function App({ setLoading, stateApp, setStateApp }) {
           formEntity.id,
           stateApp.token
         );
-        const { nodes, edges } = await handleCustodyAccount(data);
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const { nodes, edges } = await useCustodyAccount(data);
         setState({
           ...state,
           nodes,
